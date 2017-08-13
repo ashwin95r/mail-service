@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <form class="form-horizontal" id="mail" action="#">
+    <!-- <fieldset> -->
+
+    <!-- Form Name -->
+    <legend>Mail Service</legend>
+
+  <div class="col-md-8 col-md-offset-2">
+  <div class="alert alert-danger alert-dismissable" role="alert" id="alert" style="display: none;">
+      <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <span id="alert-text"></span>
+  </div>
+  </div>
+
+  <div class="col-md-8 col-md-offset-2">
+  <div class="alert alert-success alert-dismissable" role="alert" id="alert-success" style="display: none;">
+      <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <span id="alert-success-text"></span>
+  </div>
+  </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="to">To</label>  
+      <div class="col-md-5">
+        <input id="to" name="to" type="text" placeholder="Mail id to send to" class="form-control input-md" required=""> 
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="cc">CC</label>  
+      <div class="col-md-5">
+        <input id="cc" name="cc" type="text" placeholder="CC" class="form-control input-md">
+        <span class="help-block"></span>  
+      </div>
+    </div>
+
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="bcc">BCC</label>  
+      <div class="col-md-5">
+        <input id="bcc" name="bcc" type="text" placeholder="BCC" class="form-control input-md">
+        <span class="help-block"></span>  
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="subject">Subject</label>  
+      <div class="col-md-5">
+        <input name="subject" type="text" placeholder="Subject" class="form-control input-md">
+        <span class="help-block"></span>  
+      </div>
+    </div>
+
+	
+    <!-- Textarea -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="message">MESSAGE</label>
+      <div class="col-md-5">                     
+        <textarea class="form-control" id="message" name="message" rows=10>Hello.
+        </textarea>
+      </div>
+    </div>
+
+    <!-- Button (Double) -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="SUBMIT"></label>
+      <div class="col-md-8">
+        <button id="SUBMIT" name="SUBMIT" class="btn btn-success">SEND Mail</button>
+        <button id="RESET" name="RESET" class="btn btn-danger">RESET</button>
+      </div>
+    </div>
+
+    <!-- </fieldset> -->
+  </form>
+
+  <script>
+
+    $("[data-hide]").on("click", function(){
+        $(this).closest("." + $(this).attr("data-hide")).hide();
+    });
+
+    function validateEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    }
+
+    function getFormData($form){
+      var unindexed_array = $form.serializeArray();
+      var indexed_array = {};
+
+      $.map(unindexed_array, function(n, i){
+        indexed_array[n['name']] = n['value'];
+      });
+
+      return indexed_array;
+    }
+
+	function splitAndValidate(str) {
+		var emails = str.split(",")
+		console.log("str",emails)
+      	emails = emails.map(function(email) {
+      		return email.trim()
+      	})
+      	for (var i = 0; i < emails.length; i++) {
+        	if (!validateEmail(emails[i])) {
+        		console.log("invalid", emails[i])
+          		$("#alert-text").text("Invalid email: " + emails[i])
+          		$("#alert").show()
+          		return
+        	}
+      	}
+      	return emails
+	}
+    
+    var frm = $('#mail');
+
+    frm.submit(function (e) {
+      e.preventDefault();
+
+      $("#alert").hide()
+      $("#alert-success").hide()
+      
+
+      var data = getFormData(frm)
+      data["to"] = splitAndValidate(document.getElementById("to").value)
+      data["cc"] = splitAndValidate(document.getElementById("cc").value)
+      data["bcc"] = splitAndValidate(document.getElementById("bcc").value)
+      
+      console.log("form",data)
+
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/sendmail",
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (data) {
+          $("#alert-success-text").text('Submission was successful.');
+          $("#alert-success").show()
+        },
+        error: function (data) {
+          $("#alert-text").text(data)
+          $("#alert").show()
+        },
+      });
+    });
+  </script>
+</body>
+</html>
