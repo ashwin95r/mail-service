@@ -115,14 +115,17 @@
       		return email.trim()
       	})
       	for (var i = 0; i < emails.length; i++) {
+      		if (emails[i] == "") {
+      			continue
+      		}
         	if (!validateEmail(emails[i])) {
         		console.log("invalid", emails[i])
           		$("#alert-text").text("Invalid email: " + emails[i])
           		$("#alert").show()
-          		return
+          		return [null, false]
         	}
       	}
-      	return emails
+      	return [emails, true]
 	}
     
     var frm = $('#mail');
@@ -135,11 +138,28 @@
       
 
       var data = getFormData(frm)
-      data["to"] = splitAndValidate(document.getElementById("to").value)
-      data["cc"] = splitAndValidate(document.getElementById("cc").value)
-      data["bcc"] = splitAndValidate(document.getElementById("bcc").value)
+      res  = splitAndValidate(document.getElementById("to").value)
+      ok = res[1]
+      if (!ok) {
+      	return
+      }
+      data["to"] = res[0]
+      res = splitAndValidate(document.getElementById("cc").value)
+      data["cc"], ok = res[0], res[1]
+      ok = res[1]
+      if (!ok) {
+      	return
+      }
+      data["cc"] = res[0]
+      res = splitAndValidate(document.getElementById("bcc").value)
+            data["bcc"], ok = res[0], res[1]
+
+	ok = res[1]
+      if (!ok) {
+      	return
+      }
+      data["bcc"] = res[0]
       
-      console.log("form",data)
 
       $.ajax({
         type: "POST",
