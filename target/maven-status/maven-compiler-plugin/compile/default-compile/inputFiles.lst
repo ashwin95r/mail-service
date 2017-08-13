@@ -1,6 +1,8 @@
-/home/ashwin/Desktop/Job application/mailService/src/main/java/MailGunClient.java
-/home/ashwin/Desktop/Job application/mailService/src/main/java/Application.java
-/home/ashwin/Desktop/Job application/mailService/src/main/java/Mail.java
-/home/ashwin/Desktop/Job application/mailService/src/main/java/SendGridClient.java
-/home/ashwin/Desktop/Job application/mailService/src/main/java/GreetingController.java
-/home/ashwin/Desktop/Job application/mailService/src/main/java/Greeting.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/EmailException.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/Application.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/MailService.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/MailGunClient.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/MailController.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/SendGridClient.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/Mail.java
+/home/ashwin/Desktop/Job application/mailService/src/main/java/hello/MailSender.java
