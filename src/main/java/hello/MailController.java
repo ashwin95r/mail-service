@@ -21,9 +21,13 @@ public class MailController {
         if ((msg = mail.validate()) != "") {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
         }
-        // Send mail.
-        m.send(mail);
 
+        // Send mail.
+        try {
+            m.send(mail);
+        } catch (IOException|EmailException|NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

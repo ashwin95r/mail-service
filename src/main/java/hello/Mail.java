@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.regex.*;
 
 public class Mail {
-    @NotNull
     public List<String> to;
     public List<String> cc;
     public List<String> bcc;
-    @NotNull
     public String subject;
-    @NotNull
     public String message;
 
     public Boolean validateEmail(String emailAddress) {
@@ -27,6 +24,32 @@ public class Mail {
     public String validate() {
         if (message == null || message.isEmpty()) {
             return "Empty Body";
+        }
+
+        if (to == null) {
+            return "Missing To address";
+        }
+
+        for(String str: to) {
+            if(!validateEmail(str)) {
+                return "Invalid email id: " + str;
+            }
+        }
+
+        if(cc != null) {
+            for (String str : cc) {
+                if (!validateEmail(str)) {
+                    return "Invalid email id: " + str;
+                }
+            }
+        }
+
+        if(bcc != null ) {
+            for (String str : bcc) {
+                if (!validateEmail(str)) {
+                    return "Invalid email id: " + str;
+                }
+            }
         }
         return "";
     }

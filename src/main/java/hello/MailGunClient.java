@@ -5,6 +5,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+
+import javax.validation.constraints.Null;
 import javax.ws.rs.core.MediaType;
 
 public class MailGunClient implements MailService {
@@ -21,17 +23,21 @@ public class MailGunClient implements MailService {
             }
             formData.add("to", "<" + it + ">");
         }
-        for(String it: mail.cc) {
-            if (it == "") {
-                continue;
+        try {
+            for (String it : mail.cc) {
+                if (it == "") {
+                    continue;
+                }
+                formData.add("cc", "<" + it + ">");
             }
-            formData.add("cc", "<" + it + ">");
-        }
-        for(String it: mail.bcc) {
-            if (it == "") {
-                continue;
+            for (String it : mail.bcc) {
+                if (it == "") {
+                    continue;
+                }
+                formData.add("bcc", "<" + it + ">");
             }
-            formData.add("bcc", "<" + it + ">");
+        } catch (NullPointerException e) {
+            //Ignore
         }
         formData.add("subject", mail.subject);
         formData.add("text", mail.message);

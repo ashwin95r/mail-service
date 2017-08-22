@@ -8,6 +8,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 
+import javax.validation.constraints.Null;
 import javax.ws.rs.core.MultivaluedHashMap;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,29 +35,33 @@ public class SendGridClient implements MailService {
         if (l.size() > 0) {
             mp1.put("to", l);
         }
-        l = new ArrayList<>();
-        for(String it: mail.cc) {
-            if (it == "") {
-                continue;
+        try {
+            l = new ArrayList<>();
+            for (String it : mail.cc) {
+                if (it == "") {
+                    continue;
+                }
+                HashMap mp2 = new HashMap();
+                mp2.put("email", it);
+                l.add(mp2);
             }
-            HashMap mp2 = new HashMap();
-            mp2.put("email", it);
-            l.add(mp2);
-        }
-        if (l.size() > 0) {
-            mp1.put("cc", l);
-        }
-        l = new ArrayList<>();
-        for(String it: mail.bcc) {
-            if (it == "") {
-                continue;
+            if (l.size() > 0) {
+                mp1.put("cc", l);
             }
-            HashMap mp2 = new HashMap();
-            mp2.put("email", it);
-            l.add(mp2);
-        }
-        if (l.size() > 0) {
-            mp1.put("bcc", l);
+            l = new ArrayList<>();
+            for (String it : mail.bcc) {
+                if (it == "") {
+                    continue;
+                }
+                HashMap mp2 = new HashMap();
+                mp2.put("email", it);
+                l.add(mp2);
+            }
+            if (l.size() > 0) {
+                mp1.put("bcc", l);
+            }
+        } catch (NullPointerException e) {
+            // Ignore
         }
         mp1.put("subject", mail.subject);
         l = new ArrayList<>();
