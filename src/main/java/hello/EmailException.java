@@ -1,7 +1,6 @@
 package hello;
 
 public class EmailException extends Exception {
-
     String message;
     Integer status;
 
@@ -10,7 +9,7 @@ public class EmailException extends Exception {
         this.status = i;
     }
 
-    public String toString() {
+    public String getMessage() {
         return "Received: "+this.message+" Status code: "+this.status;
     }
 

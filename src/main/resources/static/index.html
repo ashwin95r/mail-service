@@ -170,7 +170,7 @@
           $("#alert-success").show()
         },
         error: function (data) {
-          $("#alert-text").text('Sending Failed.\n'+data.responseText)
+          $("#alert-text").text('Sending Failed. '+data.responseText)
           $("#alert").show()
         },
       });

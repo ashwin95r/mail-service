@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SendGridClient implements MailService {
     private ObjectMapper mapper = new ObjectMapper();
-    private String SG_API_KEY = "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";
+    private String SG_API_KEY = "";
     private String SG_URL = "https://api.sendgrid.com/v3/mail/send";
 
     public HashMap sgObject(Mail mail) {

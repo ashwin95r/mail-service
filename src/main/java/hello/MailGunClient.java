@@ -8,7 +8,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import javax.ws.rs.core.MediaType;
 
 public class MailGunClient implements MailService {
-    private String MG_API = "key-399c536f7b315f9ef0318b4776ba8a6e";
+    private String MG_API = "";
     private String MG_URL = "https://api.mailgun.net/v3/sandbox30f1890eb10b4a7e825353d825dc3666.mailgun.org/messages";
     private String MG_FROM = "Mailgun Sandbox <postmaster@sandbox30f1890eb10b4a7e825353d825dc3666.mailgun.org>";
 
