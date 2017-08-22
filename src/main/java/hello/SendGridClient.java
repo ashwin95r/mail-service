@@ -24,6 +24,7 @@ public class SendGridClient implements MailService {
         HashMap mp = new HashMap();
         HashMap mp1 = new HashMap();
         List<Object> l = new ArrayList<>();
+        // Add to
         for(String it: mail.to) {
             if (it == "") {
                 continue;
@@ -32,9 +33,8 @@ public class SendGridClient implements MailService {
             mp2.put("email", it);
             l.add(mp2);
         }
-        if (l.size() > 0) {
-            mp1.put("to", l);
-        }
+        mp1.put("to", l);
+
         try {
             l = new ArrayList<>();
             for (String it : mail.cc) {
@@ -63,21 +63,26 @@ public class SendGridClient implements MailService {
         } catch (NullPointerException e) {
             // Ignore
         }
+
+        // Add subject
         mp1.put("subject", mail.subject);
         l = new ArrayList<>();
         l.add(mp1);
         mp.put("personalizations", l);
 
+        // Add from
         mp1 = new HashMap();
         mp1.put("email", "test@test.com");
         mp.put("from", mp1);
 
+        // Add body
         mp1 = new HashMap();
         mp1.put("type", "text/plain");
         mp1.put("value", mail.message);
         l = new ArrayList<>();
         l.add(mp1);
         mp.put("content",l);
+
         return mp;
     }
 
