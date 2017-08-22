@@ -25,22 +25,18 @@ Parameters
 | cc | list of strings      |  The recipients of the email. |
 | bcc | list of strings      |  The recipients of the email. |
 | subject | string      |  The subject of the email. |
-| email_body | string      |  The body of the email. |
+| message | string      |  The body of the email. |
           
 Response
 
           HTTP/1.1 200
           
 
-#### To be implemented
+#### Can be implemented
 
 List all emails
      
-     GET /email/
-     
-Get a single email
-     
-     GET /email/<id>
+     GET /mail/
      
 Delete an email
       
