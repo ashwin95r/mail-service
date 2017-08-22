@@ -20,6 +20,11 @@ public class SendGridClient implements MailService {
     private String SG_API_KEY = "";
     private String SG_URL = "https://api.sendgrid.com/v3/mail/send";
 
+    private Client client;
+    SendGridClient() {
+        client = Client.create();
+    }
+
     public HashMap sgObject(Mail mail) {
         HashMap mp = new HashMap();
         HashMap mp1 = new HashMap();
@@ -87,7 +92,6 @@ public class SendGridClient implements MailService {
     }
 
     public void send(Mail mail) throws IOException, EmailException {
-        Client client = Client.create();
         WebResource webResource = client.resource(SG_URL);
 
         // Create JSON of required format

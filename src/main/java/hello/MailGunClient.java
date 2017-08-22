@@ -14,6 +14,13 @@ public class MailGunClient implements MailService {
     private String MG_URL = "https://api.mailgun.net/v3/sandbox30f1890eb10b4a7e825353d825dc3666.mailgun.org/messages";
     private String MG_FROM = "Mailgun Sandbox <postmaster@sandbox30f1890eb10b4a7e825353d825dc3666.mailgun.org>";
 
+
+    private Client client;
+    MailGunClient() {
+        client = Client.create();
+        client.addFilter(new HTTPBasicAuthFilter("api", MG_API));
+    }
+
     private MultivaluedMapImpl mgObject(Mail mail) {
         MultivaluedMapImpl formData = new MultivaluedMapImpl();
         formData.add("from", MG_FROM);
@@ -45,8 +52,6 @@ public class MailGunClient implements MailService {
     }
 
     public void send(Mail mail) throws EmailException {
-        Client client = Client.create();
-        client.addFilter(new HTTPBasicAuthFilter("api", MG_API));
         WebResource webResource = client.resource(MG_URL);
 
         // Create FORM data
